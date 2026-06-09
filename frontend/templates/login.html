@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In — MindHaven</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/static/style.css">
+    
+    <style>
+        .auth-page-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .auth-card-centered {
+            width: 100%;
+            max-width: 420px;
+            padding: 40px;
+            animation: cardFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes cardFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Floating Header for Language & Theme -->
+    <header style="position: fixed; top: 0; left: 0; right: 0; background: transparent; z-index: 100;">
+        <div class="nav-container" style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: flex-end; padding: 24px 24px 0 24px; align-items: center;">
+            <select id="lang-selector" style="background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 8px 12px; border-radius: 16px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; cursor: pointer; outline: none; transition: all 0.3s ease;">
+                <option value="en">English</option>
+                <option value="hi">हिंदी</option>
+                <option value="te">తెలుగు</option>
+            </select>
+            
+            <button id="theme-toggle" aria-label="Toggle theme" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-main); margin-left: 12px; transition: all 0.3s ease;">
+                <i data-lucide="sun" id="sun-icon"></i>
+                <i data-lucide="moon" id="moon-icon" class="hidden"></i>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Glowing Background Orbs -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+
+    <div class="auth-page-container">
+        <!-- Onboarding Screen -->
+        <div class="glass-card auth-card-centered" id="card-onboarding" style="display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 400px; padding: 40px 32px;">
+            <h1 class="onboarding-title" data-i18n="onboarding-title" style="font-size: 1.8rem; font-weight: 800; line-height: 1.25; margin-bottom: 12px; font-family: var(--font-heading); color: var(--text-main);">Take care of your mind</h1>
+            <p class="onboarding-subtitle" data-i18n="onboarding-subtitle" style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.4; max-width: 280px; margin: 0 auto 20px auto;">Mental well-being is just as important as physical health</p>
+            
+            <div class="onboarding-image-container" style="width: 100%; display: flex; justify-content: center; margin: 16px 0 24px 0;">
+                <img src="/static/onboarding_girl.jpg" alt="Take care of your mind" class="onboarding-image" style="max-width: 85%; height: auto; border-radius: 28px; box-shadow: 0 8px 24px rgba(107, 70, 193, 0.08);">
+            </div>
+            
+            <button class="btn btn-primary w-full" id="btn-get-started" data-i18n="btn-get-started" style="margin-top: 12px; padding: 14px 24px; border-radius: 16px; font-size: 1rem; width: 100%;">Get Started</button>
+            
+            <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">
+                <span id="link-go-login" data-i18n="link-have-account" style="color: var(--primary); cursor: pointer; font-weight: 600; text-decoration: underline;">Already have an account? Login</span>
+            </p>
+        </div>
+
+        <!-- Auth Form Card -->
+        <div class="glass-card auth-card-centered hidden" id="card-auth-form" style="position: relative; max-width: 420px; padding: 40px;">
+            <!-- Back Arrow -->
+            <button class="btn-text" id="btn-back-onboarding" style="position: absolute; top: 16px; left: 16px; font-size: 0.85rem; padding: 4px; display: flex; align-items: center; gap: 4px;">
+                <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> <span data-i18n="btn-cancel">Back</span>
+            </button>
+            
+            <!-- App Logo Header -->
+            <div class="logo-area justify-center" style="margin-bottom: 24px; margin-top: 12px;">
+                <i data-lucide="shield-check" class="logo-icon"></i>
+                <span class="logo-text" data-i18n="logo-text">MindHaven</span>
+            </div>
+            
+            <!-- Tab switches -->
+            <div class="auth-tabs" style="margin-bottom: 30px;">
+                <button class="auth-tab active" id="tab-login-trigger" data-i18n="auth-login-tab">Sign In</button>
+                <button class="auth-tab" id="tab-register-trigger" data-i18n="auth-register-tab">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="form-login" class="auth-form active-form">
+                <div class="form-group">
+                    <label for="login-username" data-i18n="form-username-label">Username or Email</label>
+                    <input type="text" id="login-username" data-i18n-placeholder="form-username-label" placeholder="Enter username/email" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="login-password" data-i18n="form-password-label">Password</label>
+                    <input type="password" id="login-password" data-i18n-placeholder="form-password-label" placeholder="Enter password" required autocomplete="current-password">
+                </div>
+                <div class="auth-error-msg hidden" id="login-error">Invalid credentials</div>
+                <button type="submit" class="btn btn-primary w-full" data-i18n="btn-signin" style="margin-top: 10px;">Sign In</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="form-register" class="auth-form">
+                <div class="form-group">
+                    <label for="register-username" data-i18n="form-reg-username">Username</label>
+                    <input type="text" id="register-username" data-i18n-placeholder="form-reg-username" placeholder="Choose a username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="register-email" data-i18n="form-reg-email">Email</label>
+                    <input type="email" id="register-email" data-i18n-placeholder="form-reg-email" placeholder="student@university.edu" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="register-password" data-i18n="form-reg-password">Password</label>
+                    <input type="password" id="register-password" data-i18n-placeholder="form-reg-password" placeholder="Min 6 characters" required autocomplete="new-password">
+                </div>
+                <div class="form-group-checkbox" style="display: flex; align-items: center; margin-bottom: 8px; font-size: 0.9rem;">
+                    <input type="checkbox" id="register-role-admin" style="margin-right: 8px; width: auto; cursor: pointer;">
+                    <label for="register-role-admin" data-i18n="form-reg-admin-checkbox" style="cursor: pointer; color: var(--text-muted);">Register as Administrator</label>
+                </div>
+                <div class="auth-error-msg hidden" id="register-error">Registration failed</div>
+                <div class="auth-success-msg hidden" id="register-success">Account created! Redirecting...</div>
+                <button type="submit" class="btn btn-primary w-full" data-i18n="btn-create-account" style="margin-top: 10px;">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Alert Notifications -->
+    <div class="toast-notification hidden" id="toast-alert">
+        <i data-lucide="info" id="toast-icon"></i>
+        <span id="toast-message">Message details go here.</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/i18n.js"></script>
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/login.js"></script>
+</body>
+</html>

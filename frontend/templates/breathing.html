@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guided Breathing — MindHaven</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    
+    <!-- Glowing Background Orbs -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+
+    <!-- Navigation Header -->
+    <header id="app-header">
+        <div class="nav-container">
+            <div class="logo-area" onclick="window.location.href='/dashboard'">
+                <i data-lucide="shield-check" class="logo-icon"></i>
+                <span class="logo-text" data-i18n="logo-text">MindHaven</span>
+            </div>
+            
+            <nav id="main-nav">
+                <button class="nav-btn" onclick="window.location.href='/dashboard'">
+                    <i data-lucide="layout-dashboard"></i> <span data-i18n="nav-dashboard">Dashboard</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/screening'" id="btn-nav-screening">
+                    <i data-lucide="activity"></i> <span data-i18n="nav-screening">AI Screening</span>
+                </button>
+                <button class="nav-btn active" onclick="window.location.href='/breathing'" id="btn-nav-breathing">
+                    <i data-lucide="wind"></i> <span data-i18n="nav-breathing">Guided Breathing</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/journal'" id="btn-nav-journal">
+                    <i data-lucide="book-open"></i> <span data-i18n="nav-journal">Mood Journal</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/resources'" id="btn-nav-resources">
+                    <i data-lucide="phone-call"></i> <span data-i18n="nav-resources">Resource Hub</span>
+                </button>
+                <button class="nav-btn hidden" onclick="window.location.href='/admin'" id="btn-nav-admin">
+                    <i data-lucide="shield-alert"></i> <span data-i18n="nav-admin">Admin Panel</span>
+                </button>
+            </nav>
+
+            <div class="nav-actions">
+                <!-- Language Selector -->
+                <select id="lang-selector" style="background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 8px 12px; border-radius: 16px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; cursor: pointer; outline: none; transition: all 0.3s ease;">
+                    <option value="en">English</option>
+                    <option value="hi">हिंदी</option>
+                    <option value="te">తెలుగు</option>
+                </select>
+
+                <button id="theme-toggle" aria-label="Toggle theme">
+                    <i data-lucide="sun" id="sun-icon"></i>
+                    <i data-lucide="moon" id="moon-icon" class="hidden"></i>
+                </button>
+                
+                <div id="user-profile-section">
+                    <button class="auth-trigger-btn hidden" id="btn-auth-trigger" onclick="window.location.href='/login'">
+                        <i data-lucide="user"></i> <span>Sign In</span>
+                    </button>
+                    <div id="logged-in-profile" class="hidden">
+                        <span class="user-greeting">Hi, <strong id="profile-username">Student</strong></span>
+                        <button class="logout-btn" id="btn-logout" title="Log Out">
+                            <i data-lucide="log-out"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div class="section-title">
+            <h2 data-i18n="breathing-title">Guided Deep Breathing</h2>
+            <p data-i18n="breathing-subtitle">Slow down, relax your mind, and regulate your nervous system using the 4-7-8 breathing method.</p>
+        </div>
+
+        <div class="breathing-layout">
+            <div class="glass-card breathing-card align-center">
+                <!-- Dynamic Breathing Circle -->
+                <div class="breathing-circle-outer" id="breathing-circle">
+                    <div class="breathing-circle-inner">
+                        <span class="breathing-state-text" id="breathing-state-label" data-i18n="breath-ready">Ready</span>
+                        <span class="breathing-timer-text" id="breathing-timer">--</span>
+                    </div>
+                </div>
+
+                <div class="breathing-controls">
+                    <button class="btn btn-primary btn-large" id="btn-breathing-start" data-i18n="btn-start-breathing">Start Exercise</button>
+                    <button class="btn btn-danger btn-large hidden" id="btn-breathing-stop" data-i18n="btn-stop-breathing">Stop Exercise</button>
+                </div>
+            </div>
+
+            <div class="glass-card instructions-card">
+                <h3 data-i18n="breathing-inst-title">The 4-7-8 Breathing Technique</h3>
+                <p class="description" data-i18n="breathing-inst-desc">Also known as the "relaxing breath," this exercise acts as a natural tranquilizer for the nervous system.</p>
+                
+                <ul class="steps-timeline">
+                    <li class="step-item" id="breathing-step-1">
+                        <div class="step-icon"><i data-lucide="chevrons-up"></i></div>
+                        <div class="step-desc">
+                            <strong data-i18n="breathing-step1-title">Inhale (4 Seconds)</strong>
+                            <p data-i18n="breathing-step1-desc">Breathe in quietly through your nose, letting your belly expand.</p>
+                        </div>
+                    </li>
+                    <li class="step-item" id="breathing-step-2">
+                        <div class="step-icon"><i data-lucide="circle"></i></div>
+                        <div class="step-desc">
+                            <strong data-i18n="breathing-step2-title">Hold (7 Seconds)</strong>
+                            <p data-i18n="breathing-step2-desc">Keep your breath suspended comfortably without straining.</p>
+                        </div>
+                    </li>
+                    <li class="step-item" id="breathing-step-3">
+                        <div class="step-icon"><i data-lucide="chevrons-down"></i></div>
+                        <div class="step-desc">
+                            <strong data-i18n="breathing-step3-title">Exhale (8 Seconds)</strong>
+                            <p data-i18n="breathing-step3-desc">Exhale completely through your mouth, making a gentle 'whoosh' sound.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Alert Notifications -->
+    <div class="toast-notification hidden" id="toast-alert">
+        <i data-lucide="info" id="toast-icon"></i>
+        <span id="toast-message">Message details go here.</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/i18n.js"></script>
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/breathing.js"></script>
+</body>
+</html>

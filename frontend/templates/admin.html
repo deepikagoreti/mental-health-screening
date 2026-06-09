@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — MindHaven</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    
+    <!-- Glowing Background Orbs -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+
+    <!-- Navigation Header -->
+    <header id="app-header">
+        <div class="nav-container">
+            <div class="logo-area" onclick="window.location.href='/dashboard'">
+                <i data-lucide="shield-check" class="logo-icon"></i>
+                <span class="logo-text" data-i18n="logo-text">MindHaven</span>
+            </div>
+            
+            <nav id="main-nav">
+                <button class="nav-btn" onclick="window.location.href='/dashboard'">
+                    <i data-lucide="layout-dashboard"></i> <span data-i18n="nav-dashboard">Dashboard</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/screening'" id="btn-nav-screening">
+                    <i data-lucide="activity"></i> <span data-i18n="nav-screening">AI Screening</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/breathing'" id="btn-nav-breathing">
+                    <i data-lucide="wind"></i> <span data-i18n="nav-breathing">Guided Breathing</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/journal'" id="btn-nav-journal">
+                    <i data-lucide="book-open"></i> <span data-i18n="nav-journal">Mood Journal</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/resources'" id="btn-nav-resources">
+                    <i data-lucide="phone-call"></i> <span data-i18n="nav-resources">Resource Hub</span>
+                </button>
+                <button class="nav-btn active" onclick="window.location.href='/admin'" id="btn-nav-admin">
+                    <i data-lucide="shield-alert"></i> <span data-i18n="nav-admin">Admin Panel</span>
+                </button>
+            </nav>
+
+            <div class="nav-actions">
+                <!-- Language Selector -->
+                <select id="lang-selector" style="background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 8px 12px; border-radius: 16px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; cursor: pointer; outline: none; transition: all 0.3s ease;">
+                    <option value="en">English</option>
+                    <option value="hi">हिंदी</option>
+                    <option value="te">తెలుగు</option>
+                </select>
+
+                <button id="theme-toggle" aria-label="Toggle theme">
+                    <i data-lucide="sun" id="sun-icon"></i>
+                    <i data-lucide="moon" id="moon-icon" class="hidden"></i>
+                </button>
+                
+                <div id="user-profile-section">
+                    <button class="auth-trigger-btn hidden" id="btn-auth-trigger" onclick="window.location.href='/login'">
+                        <i data-lucide="user"></i> <span>Sign In</span>
+                    </button>
+                    <div id="logged-in-profile" class="hidden">
+                        <span class="user-greeting">Hi, <strong id="profile-username">Admin</strong></span>
+                        <button class="logout-btn" id="btn-logout" title="Log Out">
+                            <i data-lucide="log-out"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div class="section-title">
+            <h2 data-i18n="admin-title">Administrator Monitoring Dashboard</h2>
+            <p data-i18n="admin-subtitle">Track student mental wellness levels, evaluate risk distributions, and review proactive counseling outreach logs.</p>
+        </div>
+
+        <!-- Admin Stats Cards Grid -->
+        <div class="dashboard-grid">
+            <div class="glass-card widget-card align-center justify-center flex-column">
+                <h3 data-i18n="stat-students">Registered Students</h3>
+                <div class="score-circle-outer" style="margin:16px auto; width:100px; height:100px;">
+                    <div class="score-circle-inner" style="background-color: var(--primary);">
+                        <span class="score-number" id="admin-stat-students">--</span>
+                    </div>
+                </div>
+                <p class="widget-desc" data-i18n="stat-students-desc">Total student accounts registered</p>
+            </div>
+
+            <div class="glass-card widget-card align-center justify-center flex-column">
+                <h3 data-i18n="stat-assessments">Assessments Conducted</h3>
+                <div class="score-circle-outer" style="margin:16px auto; width:100px; height:100px;">
+                    <div class="score-circle-inner" style="background-color: var(--secondary);">
+                        <span class="score-number" id="admin-stat-screenings">--</span>
+                    </div>
+                </div>
+                <p class="widget-desc" data-i18n="stat-assessments-desc">Total quizzes and bot chats completed</p>
+            </div>
+
+        </div>
+
+        <!-- Visual Analytics Section -->
+        <div class="dashboard-row margin-top">
+            <!-- Stress Risk Distribution -->
+            <div class="glass-card flex-grow chart-card">
+                <h3 data-i18n="risk-dist-title">Student Stress Risk Distribution</h3>
+                <p class="muted-text" data-i18n="risk-dist-desc">Overview of overall student anxiety & stress categories.</p>
+                <div class="admin-distribution-bars" id="admin-risk-distribution-container" style="display:flex; flex-direction:column; gap:16px; margin-top:20px;">
+                    <!-- Rendered via JS -->
+                </div>
+            </div>
+
+            <!-- Top Stress Themes -->
+            <div class="glass-card history-card" style="flex:1;">
+                <h3 data-i18n="top-themes-title">Top Stressed Themes</h3>
+                <p class="muted-text" data-i18n="top-themes-desc">Most recurring problems flagged in student journals.</p>
+                <div class="admin-themes-list" id="admin-top-themes-container" style="display:flex; flex-direction:column; gap:12px; margin-top:20px;">
+                    <!-- Rendered via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Alerts Table -->
+        <div class="glass-card margin-top">
+            <div class="card-header">
+                <h3 data-i18n="critical-alerts-title">Critical Student Health Alerts</h3>
+                <span class="legend"><span class="legend-color" style="background-color: var(--color-red);"></span> Flagged for Severe Risk</span>
+            </div>
+            <p class="muted-text" data-i18n="critical-alerts-desc">Students highlighting severe stress levels. Proactive counselor outreach is recommended.</p>
+            
+            <div class="admin-table-wrapper" style="overflow-x:auto; margin-top:16px;">
+                <table class="admin-table" id="admin-alerts-table" style="width:100%; border-collapse:collapse; text-align:left;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--card-border); padding-bottom:8px;">
+                            <th style="padding:12px;">Date</th>
+                            <th style="padding:12px;">Student Name</th>
+                            <th style="padding:12px;">Email Address</th>
+                            <th style="padding:12px; text-align:center;">Scores (Str/Anx)</th>
+                            <th style="padding:12px;">Risk Level</th>
+                            <th style="padding:12px;">Outreach Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-alerts-tbody">
+                        <!-- Populated dynamically via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Registered Users Listing Table -->
+        <div class="glass-card margin-top">
+            <div class="card-header">
+                <h3 data-i18n="user-history-title">Registered Users & Login History</h3>
+                <span class="legend"><span class="legend-color" style="background-color: var(--primary);"></span> All Registered Accounts</span>
+            </div>
+            <p class="muted-text" data-i18n="user-history-desc">Overview of all student and administrator accounts registered in the platform, along with their registration dates and last logged in times.</p>
+            
+            <div class="admin-table-wrapper" style="overflow-x:auto; margin-top:16px;">
+                <table class="admin-table" id="admin-users-table" style="width:100%; border-collapse:collapse; text-align:left;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--card-border); padding-bottom:8px;">
+                            <th style="padding:12px;">ID</th>
+                            <th style="padding:12px;">Username</th>
+                            <th style="padding:12px;">Email Address</th>
+                            <th style="padding:12px;">Role</th>
+                            <th style="padding:12px;">Registered Date</th>
+                            <th style="padding:12px;">Last Login Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-users-tbody">
+                        <!-- Populated dynamically via JS -->
+                        <tr><td colspan="6" style="text-align:center; padding:20px;" class="muted-text">Loading registered users...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Alert Notifications -->
+    <div class="toast-notification hidden" id="toast-alert">
+        <i data-lucide="info" id="toast-icon"></i>
+        <span id="toast-message">Message details go here.</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/i18n.js"></script>
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/admin.js"></script>
+</body>
+</html>

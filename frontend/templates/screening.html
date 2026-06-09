@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Screening Assessment — MindHaven</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    
+    <!-- Glowing Background Orbs -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+
+    <!-- Navigation Header -->
+    <header id="app-header">
+        <div class="nav-container">
+            <div class="logo-area" onclick="window.location.href='/dashboard'">
+                <i data-lucide="shield-check" class="logo-icon"></i>
+                <span class="logo-text" data-i18n="logo-text">MindHaven</span>
+            </div>
+            
+            <nav id="main-nav">
+                <button class="nav-btn" onclick="window.location.href='/dashboard'">
+                    <i data-lucide="layout-dashboard"></i> <span data-i18n="nav-dashboard">Dashboard</span>
+                </button>
+                <button class="nav-btn active" onclick="window.location.href='/screening'" id="btn-nav-screening">
+                    <i data-lucide="activity"></i> <span data-i18n="nav-screening">AI Screening</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/breathing'" id="btn-nav-breathing">
+                    <i data-lucide="wind"></i> <span data-i18n="nav-breathing">Guided Breathing</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/journal'" id="btn-nav-journal">
+                    <i data-lucide="book-open"></i> <span data-i18n="nav-journal">Mood Journal</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/resources'" id="btn-nav-resources">
+                    <i data-lucide="phone-call"></i> <span data-i18n="nav-resources">Resource Hub</span>
+                </button>
+                <button class="nav-btn hidden" onclick="window.location.href='/admin'" id="btn-nav-admin">
+                    <i data-lucide="shield-alert"></i> <span data-i18n="nav-admin">Admin Panel</span>
+                </button>
+            </nav>
+
+            <div class="nav-actions">
+                <!-- Language Selector -->
+                <select id="lang-selector" style="background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 8px 12px; border-radius: 16px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; cursor: pointer; outline: none; transition: all 0.3s ease;">
+                    <option value="en">English</option>
+                    <option value="hi">हिंदी</option>
+                    <option value="te">తెలుగు</option>
+                </select>
+
+                <button id="theme-toggle" aria-label="Toggle theme">
+                    <i data-lucide="sun" id="sun-icon"></i>
+                    <i data-lucide="moon" id="moon-icon" class="hidden"></i>
+                </button>
+                
+                <div id="user-profile-section">
+                    <button class="auth-trigger-btn hidden" id="btn-auth-trigger" onclick="window.location.href='/login'">
+                        <i data-lucide="user"></i> <span>Sign In</span>
+                    </button>
+                    <div id="logged-in-profile" class="hidden">
+                        <span class="user-greeting">Hi, <strong id="profile-username">Student</strong></span>
+                        <button class="logout-btn" id="btn-logout" title="Log Out">
+                            <i data-lucide="log-out"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div class="section-title">
+            <h2 data-i18n="screening-title">AI Mental Health Screening</h2>
+            <p data-i18n="screening-subtitle">Identify your stress and anxiety levels early. Choose our structured clinical assessment or chat with our AI counselor.</p>
+        </div>
+
+        <!-- Mode Selector -->
+        <div class="screening-mode-selector" id="screening-selector">
+            <div class="glass-card selection-card" id="card-select-standard">
+                <i data-lucide="clipboard-list" class="mode-icon text-teal"></i>
+                <h3 data-i18n="quiz-desc-title">Standard Quiz</h3>
+                <p data-i18n="quiz-desc-body">Answer a step-by-step questionnaire modeled on GAD-7 and PHQ-9 clinical scales for anxiety and stress levels.</p>
+                <button class="btn btn-secondary w-full" id="btn-start-standard" data-i18n="btn-standard-quiz">Start Quiz</button>
+            </div>
+
+            <div class="glass-card selection-card" id="card-select-chat">
+                <i data-lucide="bot" class="mode-icon text-violet"></i>
+                <h3 data-i18n="chat-desc-title">AI Counselor Chat</h3>
+                <p data-i18n="chat-desc-body">Have an informal chat about your feelings. Our AI analyzes your conversational response for stress triggers.</p>
+                <button class="btn btn-primary w-full" id="btn-start-chat-screen" data-i18n="btn-chat-screener">Chat with AI</button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div class="glass-card hidden" id="screening-quiz-container">
+            <div class="quiz-progress-bar">
+                <div class="progress-fill" id="quiz-progress-fill"></div>
+            </div>
+            <div class="quiz-header">
+                <span class="quiz-question-number" id="quiz-q-num">Question 1 of 10</span>
+                <button class="btn-text" id="btn-cancel-quiz"><i data-lucide="x"></i> <span data-i18n="btn-exit">Exit Quiz</span></button>
+            </div>
+            <div class="quiz-body">
+                <h3 class="quiz-question-text" id="quiz-q-text">Loading question...</h3>
+                <div class="quiz-options">
+                    <button class="option-btn" data-score="0" id="opt-0">
+                        <span class="option-title" data-i18n="opt-not-at-all">Not at all</span>
+                    </button>
+                    <button class="option-btn" data-score="1" id="opt-1">
+                        <span class="option-title" data-i18n="opt-several-days">Several days</span>
+                    </button>
+                    <button class="option-btn" data-score="2" id="opt-2">
+                        <span class="option-title" data-i18n="opt-more-than-half">More than half the days</span>
+                    </button>
+                    <button class="option-btn" data-score="3" id="opt-3">
+                        <span class="option-title" data-i18n="opt-nearly-every">Nearly every day</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chatbot Screener -->
+        <div class="glass-card chatbot-container hidden" id="screening-chat-container">
+            <div class="chat-header">
+                <div class="chat-bot-identity">
+                    <div class="bot-avatar"><i data-lucide="bot"></i></div>
+                    <div>
+                        <h4>Aria — AI Counselor</h4>
+                        <span class="status-indicator">Online | Conversational Screener</span>
+                    </div>
+                </div>
+                <button class="btn-text" id="btn-exit-chat"><i data-lucide="x"></i> <span data-i18n="btn-exit">Exit Chat</span></button>
+            </div>
+            
+            <div class="chat-messages-area" id="chat-messages">
+                <!-- Messages populated dynamically -->
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="chat-user-input" data-i18n-placeholder="chat-input-placeholder" placeholder="How are you feeling lately? Share your thoughts..." autocomplete="off">
+                <button id="btn-chat-send" class="btn btn-primary btn-round">
+                    <i data-lucide="send"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Screening Results Panel -->
+        <div class="glass-card results-container hidden" id="screening-results-container">
+            <div class="results-header align-center">
+                <i data-lucide="check-circle-2" class="success-icon" style="stroke: var(--color-purple);"></i>
+                <div>
+                    <h2>Assessment Completed</h2>
+                    <p id="results-date-stamp">Calculated on: June 4, 2026</p>
+                </div>
+            </div>
+
+            <div class="results-grid">
+                <div class="result-score-block">
+                    <div class="score-circle-outer">
+                        <div class="score-circle-inner" id="results-category-color">
+                            <span class="score-number" id="results-stress-score">14</span>
+                            <span class="score-denominator">/ 21</span>
+                            <span class="score-subtitle">Stress Score</span>
+                        </div>
+                    </div>
+                    <div class="score-circle-outer">
+                        <div class="score-circle-inner" id="results-category-color-anx">
+                            <span class="score-number" id="results-anxiety-score">10</span>
+                            <span class="score-denominator">/ 21</span>
+                            <span class="score-subtitle">Anxiety Score</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-feedback-block">
+                    <h3>Risk Category: <span id="results-category-title">Moderate Risk</span></h3>
+                    <p class="feedback-text" id="results-feedback-desc">
+                        You are displaying moderate levels of stress and anxiety. Let's practice box breathing or write down your thoughts.
+                    </p>
+                </div>
+            </div>
+
+            <div class="results-actions">
+                <button class="btn btn-secondary" onclick="window.location.href='/dashboard'">Go to Dashboard</button>
+                <button class="btn btn-primary" onclick="window.location.href='/breathing'">Try Guided Breathing</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Alert Notifications -->
+    <div class="toast-notification hidden" id="toast-alert">
+        <i data-lucide="info" id="toast-icon"></i>
+        <span id="toast-message">Message details go here.</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/i18n.js"></script>
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/screening.js"></script>
+</body>
+</html>

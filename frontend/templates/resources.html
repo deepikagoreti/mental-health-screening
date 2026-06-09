@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Hub — MindHaven</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    
+    <!-- Glowing Background Orbs -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+
+    <!-- Navigation Header -->
+    <header id="app-header">
+        <div class="nav-container">
+            <div class="logo-area" onclick="window.location.href='/dashboard'">
+                <i data-lucide="shield-check" class="logo-icon"></i>
+                <span class="logo-text" data-i18n="logo-text">MindHaven</span>
+            </div>
+            
+            <nav id="main-nav">
+                <button class="nav-btn" onclick="window.location.href='/dashboard'">
+                    <i data-lucide="layout-dashboard"></i> <span data-i18n="nav-dashboard">Dashboard</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/screening'" id="btn-nav-screening">
+                    <i data-lucide="activity"></i> <span data-i18n="nav-screening">AI Screening</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/breathing'" id="btn-nav-breathing">
+                    <i data-lucide="wind"></i> <span data-i18n="nav-breathing">Guided Breathing</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/journal'" id="btn-nav-journal">
+                    <i data-lucide="book-open"></i> <span data-i18n="nav-journal">Mood Journal</span>
+                </button>
+                <button class="nav-btn active" onclick="window.location.href='/resources'" id="btn-nav-resources">
+                    <i data-lucide="phone-call"></i> <span data-i18n="nav-resources">Resource Hub</span>
+                </button>
+                <button class="nav-btn hidden" onclick="window.location.href='/admin'" id="btn-nav-admin">
+                    <i data-lucide="shield-alert"></i> <span data-i18n="nav-admin">Admin Panel</span>
+                </button>
+            </nav>
+
+            <div class="nav-actions">
+                <!-- Language Selector -->
+                <select id="lang-selector" style="background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 8px 12px; border-radius: 16px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; cursor: pointer; outline: none; transition: all 0.3s ease;">
+                    <option value="en">English</option>
+                    <option value="hi">हिंदी</option>
+                    <option value="te">తెలుగు</option>
+                </select>
+
+                <button id="theme-toggle" aria-label="Toggle theme">
+                    <i data-lucide="sun" id="sun-icon"></i>
+                    <i data-lucide="moon" id="moon-icon" class="hidden"></i>
+                </button>
+                
+                <div id="user-profile-section">
+                    <button class="auth-trigger-btn hidden" id="btn-auth-trigger" onclick="window.location.href='/login'">
+                        <i data-lucide="user"></i> <span>Sign In</span>
+                    </button>
+                    <div id="logged-in-profile" class="hidden">
+                        <span class="user-greeting">Hi, <strong id="profile-username">Student</strong></span>
+                        <button class="logout-btn" id="btn-logout" title="Log Out">
+                            <i data-lucide="log-out"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div class="section-title">
+            <h2 data-i18n="resources-title">Coping Resources & Guidance</h2>
+            <p data-i18n="resources-subtitle">Access immediate professional assistance, campus networks, and helpful tools to manage panic attacks and exam pressure.</p>
+        </div>
+
+        <div class="resources-layout">
+            <!-- Urgent Help Card -->
+            <div class="glass-card resource-card border-urgent">
+                <div class="resource-header">
+                    <div class="resource-badge badge-urgent" data-i18n="urgent-support-badge">Urgent Support</div>
+                    <i data-lucide="phone" class="text-red"></i>
+                </div>
+                <h3 data-i18n="urgent-support-title">Immediate Mental Health Helplines</h3>
+                <p data-i18n="urgent-support-desc">If you or someone you know is in crisis or needs immediate help, call these toll-free helplines:</p>
+                <ul class="helpline-list">
+                    <li>
+                        <strong data-i18n="helpline-kiran">KIRAN Mental Health Helpline</strong>
+                        <a href="tel:18005990019" class="phone-link">1800-599-0019</a>
+                    </li>
+                    <li>
+                        <strong data-i18n="helpline-telemanas">Tele-MANAS Toll-Free</strong>
+                        <a href="tel:14416" class="phone-link">14416</a> or <a href="tel:18008914416" class="phone-link">1800-89-14416</a>
+                    </li>
+                    <li>
+                        <strong data-i18n="helpline-vandrevala">Vandrevala Foundation</strong>
+                        <a href="tel:9999666555" class="phone-link">+91 9999 666 555</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Academic Coping Cards -->
+            <div class="glass-card resource-card">
+                <div class="resource-header">
+                    <div class="resource-badge badge-info" data-i18n="cbt-tools-badge">CBT Tools</div>
+                    <i data-lucide="brain" class="text-teal"></i>
+                </div>
+                <h3 data-i18n="cbt-tools-title">Academic & Exam Stress Tools</h3>
+                <p data-i18n="cbt-tools-desc">Strategies to overcome studying blocks, exam panic, and time-management burnout:</p>
+                <ul class="resource-tips">
+                    <li data-i18n="cbt-tip1">Pomodoro Technique: Work for 25 minutes, break for 5. Helps focus when anxious.</li>
+                    <li data-i18n="cbt-tip2">Cognitive Restructuring: Replace "I will fail" with "I am preparing the best I can, and one test doesn't seal my future."</li>
+                    <li data-i18n="cbt-tip3">Study Breaks: A 10-minute walk in nature relaxes the amygdala.</li>
+                </ul>
+            </div>
+
+            <!-- Soundscapes and meditation -->
+            <div class="glass-card resource-card">
+                <div class="resource-header">
+                    <div class="resource-badge badge-primary" data-i18n="soundscapes-badge">Relaxation</div>
+                    <i data-lucide="headphones" class="text-violet"></i>
+                </div>
+                <h3 data-i18n="soundscapes-title">Soundscapes & Ambient Aids</h3>
+                <p data-i18n="soundscapes-desc">Calming audio prompts to listen to while studying or going to sleep:</p>
+                <div class="audio-tool-grid">
+                    <button class="btn btn-outline sound-btn" data-sound="rain" id="btn-sound-rain">
+                        <i data-lucide="cloud-rain"></i> <span data-i18n="sound-rain">Gentle Rain</span>
+                    </button>
+                    <button class="btn btn-outline sound-btn" data-sound="waves" id="btn-sound-waves">
+                        <i data-lucide="waves"></i> <span data-i18n="sound-waves">Ocean Waves</span>
+                    </button>
+                    <button class="btn btn-outline sound-btn" data-sound="forest" id="btn-sound-forest">
+                        <i data-lucide="trees"></i> <span data-i18n="sound-birds">Forest Birds</span>
+                    </button>
+                    <button class="btn btn-outline sound-btn" data-sound="whitenoise" id="btn-sound-white">
+                        <i data-lucide="radio"></i> <span data-i18n="sound-noise">Brown Noise</span>
+                    </button>
+                </div>
+                <!-- Synthesized Web Audio API Status -->
+                <div class="sound-player-status hidden" id="sound-player-status">
+                    <span id="playing-sound-name">Playing Forest Ambient</span>
+                    <button class="btn-text text-red" id="btn-sound-stop"><i data-lucide="volume-x"></i> Stop</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Alert Notifications -->
+    <div class="toast-notification hidden" id="toast-alert">
+        <i data-lucide="info" id="toast-icon"></i>
+        <span id="toast-message">Message details go here.</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/i18n.js"></script>
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/resources.js"></script>
+</body>
+</html>

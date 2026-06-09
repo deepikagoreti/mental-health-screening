@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard — MindHaven</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    
+    <!-- SVG Gradients Definition -->
+    <svg style="width:0; height:0; position:absolute;" width="0" height="0">
+        <defs>
+            <linearGradient id="stress-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#a78bfa"/>
+                <stop offset="60%" stop-color="#a855f7"/>
+                <stop offset="100%" stop-color="#ef4444"/>
+            </linearGradient>
+            <linearGradient id="anxiety-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#8b5cf6"/>
+                <stop offset="60%" stop-color="#d946ef"/>
+                <stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- Glowing Background Orbs -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+
+    <!-- Navigation Header -->
+    <header id="app-header">
+        <div class="nav-container">
+            <div class="logo-area" onclick="window.location.href='/dashboard'">
+                <i data-lucide="shield-check" class="logo-icon"></i>
+                <span class="logo-text" data-i18n="logo-text">MindHaven</span>
+            </div>
+            
+            <nav id="main-nav">
+                <button class="nav-btn active" onclick="window.location.href='/dashboard'">
+                    <i data-lucide="layout-dashboard"></i> <span data-i18n="nav-dashboard">Dashboard</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/screening'" id="btn-nav-screening">
+                    <i data-lucide="activity"></i> <span data-i18n="nav-screening">AI Screening</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/breathing'" id="btn-nav-breathing">
+                    <i data-lucide="wind"></i> <span data-i18n="nav-breathing">Guided Breathing</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/journal'" id="btn-nav-journal">
+                    <i data-lucide="book-open"></i> <span data-i18n="nav-journal">Mood Journal</span>
+                </button>
+                <button class="nav-btn" onclick="window.location.href='/resources'" id="btn-nav-resources">
+                    <i data-lucide="phone-call"></i> <span data-i18n="nav-resources">Resource Hub</span>
+                </button>
+                <button class="nav-btn hidden" onclick="window.location.href='/admin'" id="btn-nav-admin">
+                    <i data-lucide="shield-alert"></i> <span data-i18n="nav-admin">Admin Panel</span>
+                </button>
+            </nav>
+
+            <div class="nav-actions">
+                <!-- Language Selector -->
+                <select id="lang-selector" style="background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 8px 12px; border-radius: 16px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; cursor: pointer; outline: none; transition: all 0.3s ease;">
+                    <option value="en">English</option>
+                    <option value="hi">हिंदी</option>
+                    <option value="te">తెలుగు</option>
+                </select>
+
+                <button id="theme-toggle" aria-label="Toggle theme">
+                    <i data-lucide="sun" id="sun-icon"></i>
+                    <i data-lucide="moon" id="moon-icon" class="hidden"></i>
+                </button>
+                
+                <div id="user-profile-section">
+                    <button class="auth-trigger-btn hidden" id="btn-auth-trigger" onclick="window.location.href='/login'">
+                        <i data-lucide="user"></i> <span data-i18n="nav-signin">Sign In</span>
+                    </button>
+                    <div id="logged-in-profile" class="hidden">
+                        <span class="user-greeting">Hi, <strong id="profile-username">Student</strong></span>
+                        <button class="logout-btn" id="btn-logout" title="Log Out">
+                            <i data-lucide="log-out"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div class="welcome-banner">
+            <div class="welcome-text">
+                <h1 data-i18n="welcome-title">Pause. Breathe. Reset.</h1>
+                <p data-i18n="welcome-subtitle">Your personal safe space to check stress, practice mindfulness, and access support tools.</p>
+            </div>
+            <div class="welcome-action">
+                <button class="btn btn-primary" onclick="window.location.href='/screening'">
+                    <i data-lucide="activity-square"></i> <span data-i18n="btn-take-assessment">Take Stress Assessment</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Health Status Panels -->
+        <div class="dashboard-grid">
+            <!-- Stress Dial Widget -->
+            <div class="glass-card widget-card dial-card align-center">
+                <div class="card-title-row">
+                    <i data-lucide="activity" class="card-icon text-teal"></i>
+                    <h3 data-i18n="stress-index-title">Stress Index</h3>
+                </div>
+                <div class="gauge-container">
+                    <svg class="gauge-svg" viewBox="0 0 100 50">
+                        <path class="gauge-bg" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke-width="7" stroke-linecap="round"/>
+                        <path class="gauge-value" id="dial-stress-fill" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke-width="7" stroke-linecap="round" stroke-dasharray="125.6" stroke-dashoffset="125.6" stroke="url(#stress-grad)"/>
+                    </svg>
+                    <div class="gauge-text">
+                        <span class="gauge-score" id="text-stress-score">--</span>
+                        <span class="gauge-label" id="text-stress-label">No assessment</span>
+                    </div>
+                </div>
+                <p class="widget-desc" data-i18n="stress-index-desc">A clinical measurement of physical and mental stress indicators.</p>
+            </div>
+
+            <!-- Anxiety Dial Widget -->
+            <div class="glass-card widget-card dial-card align-center">
+                <div class="card-title-row">
+                    <i data-lucide="brain-circuit" class="card-icon text-violet"></i>
+                    <h3 data-i18n="anxiety-index-title">Anxiety Index</h3>
+                </div>
+                <div class="gauge-container">
+                    <svg class="gauge-svg" viewBox="0 0 100 50">
+                        <path class="gauge-bg" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke-width="7" stroke-linecap="round"/>
+                        <path class="gauge-value" id="dial-anxiety-fill" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke-width="7" stroke-linecap="round" stroke-dasharray="125.6" stroke-dashoffset="125.6" stroke="url(#anxiety-grad)"/>
+                    </svg>
+                    <div class="gauge-text">
+                        <span class="gauge-score" id="text-anxiety-score">--</span>
+                        <span class="gauge-label" id="text-anxiety-label">No assessment</span>
+                    </div>
+                </div>
+                <p class="widget-desc" data-i18n="anxiety-index-desc">Tracks generalized feelings of worry, fear, or panic.</p>
+            </div>
+
+            <!-- Recommended Actions Panel -->
+            <div class="glass-card widget-card flex-column insight-card" id="card-dashboard-insights">
+                <div class="card-title-row">
+                    <i data-lucide="sparkles" class="card-icon text-gold"></i>
+                    <h3 data-i18n="insights-title">Personalized Insights</h3>
+                </div>
+                <div class="empty-state align-center justify-center flex-grow" id="dashboard-insights-empty">
+                    <p class="muted-text" data-i18n="insights-empty-text">Complete an assessment to unlock personalized health guidance.</p>
+                </div>
+                <div class="insights-content hidden" id="dashboard-insights-active">
+                    <div class="insight-badge" id="insight-status-badge">Moderate Stress</div>
+                    <p class="insight-text" id="insight-description-text">You are showing moderate stress indicators. Consider practicing our guided deep breathing exercise.</p>
+                    <div class="quick-recommendations">
+                        <h4 data-i18n="recommended-title">Recommended for you:</h4>
+                        <ul class="recom-list" id="dashboard-insights-recommendations">
+                            <!-- Populated dynamically via JS -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Screenings History -->
+        <div class="dashboard-row margin-top">
+            <div class="glass-card history-card" style="flex: 1;">
+                <div class="card-header">
+                    <div class="card-title-row">
+                        <i data-lucide="history" class="card-icon text-violet"></i>
+                        <h3 data-i18n="recent-screenings-title">Recent Screenings</h3>
+                    </div>
+                </div>
+                <div class="history-list" id="dashboard-history-list">
+                    <div class="empty-state flex-grow align-center justify-center">
+                        <p class="muted-text" data-i18n="history-empty-text">No screening history available.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Alert Notifications -->
+    <div class="toast-notification hidden" id="toast-alert">
+        <i data-lucide="info" id="toast-icon"></i>
+        <span id="toast-message">Message details go here.</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/i18n.js"></script>
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
